@@ -1,14 +1,31 @@
 import antlr4 from 'antlr4';
 import CLexer from '../grammers/CLexer.js';
 import CParser from '../grammers/CParser.js';
-import CListener from '../grammers/CListener.js';
+import { getAST } from '../grammers/CWrapper.js';
 
-const input = "your text to parse here"
-const chars = new antlr4.InputStream(input);
-const lexer = new CLexer(chars);
-const tokens = new antlr4.CommonTokenStream(lexer);
-const parser = new CParser(tokens);
-parser.buildParseTrees = true;
-const tree = parser.MyStartRule();
+const input = "int main(){return 1;}"
 
-console.log(tree)
+class Visitor {
+    visitChildren(ctx) {
+        console.log(ctx);
+
+      if (!ctx) {
+        return;
+      }
+  
+      if (ctx.children) {
+        return ctx.children.map(child => {
+          if (child.children && child.children.length != 0) {
+            return child.accept(this);
+          } else {
+            return child.getText();
+          }
+        });
+      }
+    }
+  }
+
+
+const tree = getAST(input);
+tree.accept(new Visitor());
+// console.log(tree);
