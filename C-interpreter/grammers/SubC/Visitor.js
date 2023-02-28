@@ -4,118 +4,191 @@ export class Visitor extends CSubVisitor {
 
     // Visit a parse tree produced by CSubParser#program.
     visitProgram(ctx) {
-        
-        console.log(ctx);
-        const parseTree = {};
-        parseTree['tag'] = 'program';
-        parseTree['content'] = this.visitChildren(ctx);
-        return parseTree;
+        const obj = {};
+        obj['tag'] = 'program';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#stat.
     visitStat(ctx) {
-        console.log(ctx);
+
         const obj = {};
         obj['tag'] = 'stat';
-        obj['content'] = this.visitChildren(ctx);
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+
         return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#return.
     visitReturn(ctx) {
-        console.log(ctx);
         const obj = {};
         obj['tag'] = 'return';
-        obj['content'] = this.visitChildren(ctx);
+        var children;
+        [children] = this.visitChildren(ctx);
+
+        obj['children'] = children;
+        
+        
         return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#varDef.
     visitVarDef(ctx) {
-        console.log(ctx);
         const obj = {};
-        obj['tag'] = 'return';
-        obj['content'] = this.visitChildren(ctx);
-        return this.visitChildren(ctx);
+        obj['tag'] = 'varDef';
+        var type, idOrAssg;
+        [type, idOrAssg] = this.visitChildren(ctx);
+
+        obj['type'] = type;
+
+        if(idOrAssg != undefined && idOrAssg.tag === 'assg'){
+            obj['assg'] = idOrAssg;
+        } else {
+            obj['symbol'] = ctx.ID().getText();
+        }
+
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#assg.
     visitAssg(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+
+        const obj = {};
+        obj['tag'] = 'assg';
+        obj['symbol'] = ctx.ID().getText();
+        
+        var symbolChild, eqChild, exprChild;
+        [symbolChild, eqChild, exprChild] = this.visitChildren(ctx);
+        obj['children'] = exprChild;
+
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#whileStat.
     visitWhileStat(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'whileStat';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#ifStat.
     visitIfStat(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'ifStat';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#def.
     visitDef(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'def';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#funDef.
     visitFunDef(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'funDef';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#expr.
     visitExpr(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'expr';
+        var expr1, op, expr2;
+        [expr1, op, expr2] = this.visitChildren(ctx);
+
+        obj['curExpr'] = ctx.getText();
+
+        if(expr1 != undefined && op != undefined && expr2 != undefined){
+            obj['expr1'] = expr1;
+            obj['op'] = op;
+            obj['expr2'] = expr2;
+        } else if(expr1 != undefined && op != undefined && expr2 == undefined){
+            obj['op'] = expr1;
+            obj['expr1'] = op;
+        } else if(expr1 != undefined && op == undefined && expr2 == undefined){
+            obj['expr1'] = expr1;
+        }
+
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#funCall.
     visitFunCall(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'funCall';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#unaryOp.
     visitUnaryOp(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'unaryOp';
+        obj['symbol'] = ctx.getText();
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#binaryOp.
     visitBinaryOp(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'binaryOp';
+        obj['symbol'] = ctx.getText();
+
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#block.
     visitBlock(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'block';
+        var children;
+        [children] = this.visitChildren(ctx);
+        obj['children'] = children;
+        return obj;
     }
 
 
     // Visit a parse tree produced by CSubParser#type.
     visitType(ctx) {
-        console.log(ctx);
-        return this.visitChildren(ctx);
+        const obj = {};
+        obj['tag'] = 'type';
+        obj['type'] = ctx.getText();
+
+        return obj;
     }
 }

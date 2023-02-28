@@ -15,7 +15,7 @@ const serializedATN = [4,1,32,159,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 9,1,9,3,9,126,8,9,1,9,1,9,1,9,1,9,5,9,132,8,9,10,9,12,9,135,9,9,1,10,1,10,
 1,10,1,10,1,10,5,10,142,8,10,10,10,12,10,145,9,10,1,10,1,10,1,11,1,11,1,
 12,1,12,1,13,1,13,1,13,1,13,1,14,1,14,1,14,0,2,0,18,15,0,2,4,6,8,10,12,14,
-16,18,20,22,24,26,28,0,3,3,0,5,7,17,17,26,26,3,0,8,8,15,19,24,25,1,0,9,12,
+16,18,20,22,24,26,28,0,3,3,0,5,7,15,17,26,26,3,0,8,8,15,19,24,25,1,0,9,12,
 161,0,30,1,0,0,0,2,53,1,0,0,0,4,55,1,0,0,0,6,65,1,0,0,0,8,67,1,0,0,0,10,
 71,1,0,0,0,12,77,1,0,0,0,14,89,1,0,0,0,16,91,1,0,0,0,18,125,1,0,0,0,20,136,
 1,0,0,0,22,148,1,0,0,0,24,150,1,0,0,0,26,152,1,0,0,0,28,156,1,0,0,0,30,31,
@@ -255,7 +255,7 @@ export default class CSubParser extends antlr4.Parser {
 	        this.state = 57;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if(((((_la - 5)) & ~0x1f) === 0 && ((1 << (_la - 5)) & 203427847) !== 0)) {
+	        if(((((_la - 5)) & ~0x1f) === 0 && ((1 << (_la - 5)) & 203430919) !== 0)) {
 	            this.state = 56;
 	            this.expr(0);
 	        }
@@ -492,7 +492,7 @@ export default class CSubParser extends antlr4.Parser {
 	        this.state = 113;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        while(((((_la - 1)) & ~0x1f) === 0 && ((1 << (_la - 1)) & 3523284855) !== 0)) {
+	        while(((((_la - 1)) & ~0x1f) === 0 && ((1 << (_la - 1)) & 3523334007) !== 0)) {
 	            this.state = 110;
 	            this.stat();
 	            this.state = 115;
@@ -647,7 +647,7 @@ export default class CSubParser extends antlr4.Parser {
 	        this.enterOuterAlt(localctx, 1);
 	        this.state = 148;
 	        _la = this._input.LA(1);
-	        if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 67240160) !== 0))) {
+	        if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 67338464) !== 0))) {
 	        this._errHandler.recoverInline(this);
 	        }
 	        else {
@@ -1506,6 +1506,14 @@ class UnaryOpContext extends antlr4.ParserRuleContext {
 
 	MUL() {
 	    return this.getToken(CSubParser.MUL, 0);
+	};
+
+	ADD() {
+	    return this.getToken(CSubParser.ADD, 0);
+	};
+
+	SUB() {
+	    return this.getToken(CSubParser.SUB, 0);
 	};
 
 	enterRule(listener) {

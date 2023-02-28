@@ -1,4 +1,4 @@
-// Generated from c:\Projects\CS4215\C-interpreter\grammers\SubC\CSub.g4 by ANTLR 4.9.2
+// Generated from d:\Projects\CS4215\C-interpreter\grammers\SubC\CSub.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -295,7 +295,7 @@ public class CSubParser extends Parser {
 			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << MUL) | (1L << NOT) | (1L << INT) | (1L << ID))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << NOT) | (1L << INT) | (1L << ID))) != 0)) {
 				{
 				setState(56);
 				expr(0);
@@ -630,7 +630,7 @@ public class CSubParser extends Parser {
 			setState(113);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << MUL) | (1L << NOT) | (1L << LCURLY) | (1L << INT) | (1L << ID))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << NOT) | (1L << LCURLY) | (1L << INT) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(110);
@@ -830,6 +830,8 @@ public class CSubParser extends Parser {
 	public static class UnaryOpContext extends ParserRuleContext {
 		public TerminalNode NOT() { return getToken(CSubParser.NOT, 0); }
 		public TerminalNode MUL() { return getToken(CSubParser.MUL, 0); }
+		public TerminalNode ADD() { return getToken(CSubParser.ADD, 0); }
+		public TerminalNode SUB() { return getToken(CSubParser.SUB, 0); }
 		public UnaryOpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -845,7 +847,7 @@ public class CSubParser extends Parser {
 			{
 			setState(148);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << MUL) | (1L << NOT))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << ADD) | (1L << SUB) | (1L << MUL) | (1L << NOT))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1021,7 +1023,7 @@ public class CSubParser extends Parser {
 		"\13\7\13\u0086\n\13\f\13\16\13\u0089\13\13\3\f\3\f\3\f\3\f\3\f\7\f\u0090"+
 		"\n\f\f\f\16\f\u0093\13\f\3\f\3\f\3\r\3\r\3\16\3\16\3\17\3\17\3\17\3\17"+
 		"\3\20\3\20\3\20\2\4\2\24\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\5"+
-		"\5\2\7\t\23\23\34\34\5\2\n\n\21\25\32\33\3\2\13\16\2\u00a3\2 \3\2\2\2"+
+		"\5\2\7\t\21\23\34\34\5\2\n\n\21\25\32\33\3\2\13\16\2\u00a3\2 \3\2\2\2"+
 		"\4\67\3\2\2\2\69\3\2\2\2\bC\3\2\2\2\nE\3\2\2\2\fI\3\2\2\2\16O\3\2\2\2"+
 		"\20[\3\2\2\2\22]\3\2\2\2\24\177\3\2\2\2\26\u008a\3\2\2\2\30\u0096\3\2"+
 		"\2\2\32\u0098\3\2\2\2\34\u009a\3\2\2\2\36\u009e\3\2\2\2 !\b\2\1\2!\"\5"+

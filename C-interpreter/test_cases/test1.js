@@ -1,13 +1,10 @@
 import { getStringForAST, getAST } from '../grammers/SubC/CSubWrapper.js';
 import { Visitor } from '../grammers/SubC/Visitor.js';
 
-const input = "int x = 3 + 2;"
+const input = "int x = + b;"
 
 const tree = getAST(input);
 const visitor = new Visitor();
-visitor.visitProgram(tree)
+const ret = visitor.visitProgram(tree)
 
-// console.log(getStringForAST(input));
-// console.log(tree);
-// console.log(tree.getChild(0));
-// console.log(tree.getChild(1));
+console.log(ret.children.children.children.assg.children)
