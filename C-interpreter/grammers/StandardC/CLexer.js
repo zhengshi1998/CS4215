@@ -1,4 +1,4 @@
-// Generated from ./C by ANTLR 4.12.0
+// Generated from .\C.g4 by ANTLR 4.12.0
 // jshint ignore: start
 import antlr4 from 'antlr4';
 
@@ -493,7 +493,7 @@ const decisionsToDFA = atn.decisionToState.map( (ds, index) => new antlr4.dfa.DF
 
 export default class CLexer extends antlr4.Lexer {
 
-    static grammarFileName = "C";
+    static grammarFileName = "C.g4";
     static channelNames = [ "DEFAULT_TOKEN_CHANNEL", "HIDDEN" ];
 	static modeNames = [ "DEFAULT_MODE" ];
 	static literalNames = [ null, "'__extension__'", "'__builtin_va_arg'", 

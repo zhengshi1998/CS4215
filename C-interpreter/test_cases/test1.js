@@ -1,31 +1,13 @@
-import antlr4 from 'antlr4';
-import CLexer from '../grammers/CLexer.js';
-import CParser from '../grammers/CParser.js';
-import { getAST } from '../grammers/CWrapper.js';
+import { getStringForAST, getAST } from '../grammers/SubC/CSubWrapper.js';
+import { Visitor } from '../grammers/SubC/Visitor.js';
 
-const input = "int main(){return 1;}"
-
-class Visitor {
-    visitChildren(ctx) {
-        console.log(ctx);
-
-      if (!ctx) {
-        return;
-      }
-  
-      if (ctx.children) {
-        return ctx.children.map(child => {
-          if (child.children && child.children.length != 0) {
-            return child.accept(this);
-          } else {
-            return child.getText();
-          }
-        });
-      }
-    }
-  }
-
+const input = "int x = 3 + 2;"
 
 const tree = getAST(input);
-tree.accept(new Visitor());
+const visitor = new Visitor();
+visitor.visitProgram(tree)
+
+// console.log(getStringForAST(input));
 // console.log(tree);
+// console.log(tree.getChild(0));
+// console.log(tree.getChild(1));
