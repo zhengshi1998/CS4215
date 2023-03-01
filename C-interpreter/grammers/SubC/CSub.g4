@@ -39,6 +39,7 @@ expr: ID
     | funCall
     | unaryOp expr
     | expr binaryOp expr
+    | '(' expr ')'
     ;
 
 

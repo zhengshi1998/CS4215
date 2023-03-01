@@ -68,7 +68,7 @@ export class Visitor extends CSubVisitor {
         
         var symbolChild, eqChild, exprChild;
         [symbolChild, eqChild, exprChild] = this.visitChildren(ctx);
-        obj['children'] = exprChild;
+        obj['expr'] = exprChild;
 
         return obj;
     }
@@ -127,6 +127,14 @@ export class Visitor extends CSubVisitor {
 
         obj['curExpr'] = ctx.getText();
 
+        if(ctx.ID() != undefined){
+            obj['sym'] = ctx.ID().getText();
+        }
+
+        // console.log(expr1);
+        // console.log(op);
+        // console.log(expr2);
+
         if(expr1 != undefined && op != undefined && expr2 != undefined){
             obj['expr1'] = expr1;
             obj['op'] = op;
@@ -136,6 +144,8 @@ export class Visitor extends CSubVisitor {
             obj['expr1'] = op;
         } else if(expr1 != undefined && op == undefined && expr2 == undefined){
             obj['expr1'] = expr1;
+        } else if(expr1 == undefined && op != undefined && expr2 == undefined){
+            obj['expr1'] = op;
         }
 
         return obj;
