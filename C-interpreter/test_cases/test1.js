@@ -1,7 +1,7 @@
 import { getStringForAST, getAST } from '../grammers/SubC/CSubWrapper.js';
 import { Visitor } from '../grammers/SubC/Visitor.js';
 
-const input = "(1 + 2);"
+const input = "int test(){return 1;};"
 
 const tree = getAST(input);
 const visitor = new Visitor();

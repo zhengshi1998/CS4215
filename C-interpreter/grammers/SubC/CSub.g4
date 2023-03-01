@@ -31,7 +31,7 @@ ifStat  : 'if' '(' expr ')' block 'else' block ;
 def : varDef ';' | funDef;
 
 
-funDef : type ID '(' (type ID)? (',' type ID)* ')' '{' stat* '}' ;
+funDef : type ID '(' (type ID)? (',' type ID)* ')' block ;
 
 
 expr: ID

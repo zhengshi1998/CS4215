@@ -111,8 +111,18 @@ export class Visitor extends CSubVisitor {
     visitFunDef(ctx) {
         const obj = {};
         obj['tag'] = 'funDef';
-        var children;
+        var children, v1, v2, v3, v4, v5, v6, v7;
         [children] = this.visitChildren(ctx);
+        [v1, v2, v3, v4, v5, v6, v7] = this.visitChildren(ctx);
+        // console.log("item 1 : ", v1);
+        // console.log("item 2 : ", v2);
+        // console.log("item 3 : ", v3);
+        // console.log("item 4 : ", v4);
+        // console.log("item 5 : ", v5);
+        // console.log("item 6 : ", v6);
+        // console.log("item 7 : ", v7);
+        console.log(Object.keys(ctx));
+        console.log(ctx.children.length);
         obj['children'] = children;
         return obj;
     }
