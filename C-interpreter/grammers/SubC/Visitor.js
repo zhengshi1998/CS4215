@@ -6,9 +6,10 @@ export class Visitor extends CSubVisitor {
     visitProgram(ctx) {
         const obj = {};
         obj['tag'] = 'program';
-        var children;
-        [children] = this.visitChildren(ctx);
-        obj['children'] = children
+        var program, stat;
+        [stat, program] = this.visitChildren(ctx);
+        obj['nextProgram'] = program;
+        obj['stat'] = stat;
         return obj;
     }
 
@@ -34,7 +35,6 @@ export class Visitor extends CSubVisitor {
         [children] = this.visitChildren(ctx);
 
         obj['children'] = children;
-        
         
         return obj;
     }

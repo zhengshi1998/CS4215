@@ -1,6 +1,6 @@
 grammar CSub;
 
-program : stat | program stat;
+program : stat | stat program;
 
 
 stat: assg ';'
