@@ -77,9 +77,9 @@ export class Visitor extends CSubVisitor {
     visitWhileStat(ctx) {
         const obj = {};
         obj['tag'] = 'whileStat';
-        var children;
-        [children] = this.visitChildren(ctx);
-        obj['children'] = children;
+        obj['predExpr'] = this.visit(ctx.getChild(2));
+        obj['block'] = this.visit(ctx.getChild(4));
+        console.log(obj);
         return obj;
     }
 
@@ -88,9 +88,10 @@ export class Visitor extends CSubVisitor {
     visitIfStat(ctx) {
         const obj = {};
         obj['tag'] = 'ifStat';
-        var children;
-        [children] = this.visitChildren(ctx);
-        obj['children'] = children;
+        obj['predExpr'] = this.visit(ctx.getChild(2));
+        obj['ifBlock'] = this.visit(ctx.getChild(4));
+        obj['elseBlock'] = this.visit(ctx.getChild(6));
+        console.log(obj);
         return obj;
     }
 

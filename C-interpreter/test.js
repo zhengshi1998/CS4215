@@ -81,6 +81,7 @@ const microcode = {
 
     assg_i : (cmd) => {
         var value = S[S.length - 1];
+        console.log("current frame: ", currFrame.vars);
         setValueInFrame(currFrame, cmd.symbol, value);
         S.push(value);
     }, 
@@ -127,6 +128,45 @@ const microcode = {
     assgFuncArg : (cmd) => {
         addVarToFrame(currFrame, cmd.type, cmd.symbol, S.pop());
         console.log("current Frame is : ", currFrame);
+    }, 
+
+    ifStat : (cmd) => {
+        A.push({tag : 'ifStat_i', ifBlock : cmd.ifBlock, elseBlock : cmd.elseBlock});
+        A.push(cmd.predExpr);
+    },
+
+    ifStat_i : (cmd) => {
+        var predRes = S.pop();
+        if(predRes) {
+            A.push(cmd.ifBlock);
+        } else {
+            A.push(cmd.elseBlock);
+        }
+    },
+
+    block : (cmd) => {
+        currFrame = createFrame();
+        A.push({tag : 'popFrame'});
+        A.push(cmd.program);
+    },
+
+    popFrame : (cmd) => {
+        popFrame();
+    }, 
+
+    whileStat : (cmd) => {
+        A.push({tag : 'whileStat_i', block : cmd.block, predExpr : cmd.predExpr});
+        A.push(cmd.predExpr);
+    },
+
+    whileStat_i : (cmd) => {
+        var pred = S.pop();
+        console.log("predicate : ", pred, " ", searchForVar('x').value);
+        if(pred) {
+            A.push({tag : 'whileStat_i', block : cmd.block, predExpr : cmd.predExpr});
+            A.push(cmd.predExpr);
+            A.push(cmd.block);
+        }
     }
 }
 
@@ -157,6 +197,21 @@ const applyBinaryOp = (op, expr1, expr2) => {
 
         case '%': 
             return expr1 % expr2;
+
+        case '==': 
+            return expr1 === expr2;
+
+        case '>': 
+            return expr1 > expr2;
+
+        case '>=': 
+            return expr1 >= expr2;
+
+        case '<=': 
+            return expr1 <= expr2;
+
+        case '<': 
+            return expr1 < expr2;
     }
 }
 
@@ -179,9 +234,19 @@ const addFuncToFrame = (frame, returnType, funcName, program, args) => {
 
 }
 
-const setValueInFrame = (frame, symbol, value, isFunction) => {
-    if(!isFunction) {
-        frame.vars[symbol].value = value;
+const setValueInFrame = (frame, symbol, value) => {
+    var init = currFrame, ptr = currFrame;
+    var ptrVars = ptr.vars;
+    while(ptr != null && ptrVars[symbol] == undefined){
+        ptr = ptr.next;
+        if(ptr != null) ptrVars = ptr.vars;
+    }
+
+
+    if(ptrVars[symbol] == null || ptrVars[symbol] == undefined) {
+        init.vars[symbol] = value;
+    } else {
+        ptrVars[symbol].value = value;
     }
 }
 
@@ -264,10 +329,12 @@ const test = (program, expected) => {
 }
 
 
-// example test case:
-test("int x = 7; int test(int x, int y ){return x + y;} x;", 5);
 
-// after you complete this question, the following test cases should pass
+// test("int x = 7; int test(int x, int y ){return x + y;} x;", 5);
+
+// test('int x = 1; if(x == 1){1 + 3;} else {6 + 2;};', 4);
+
+test('int x = 1; while(x < 10){x = x + 2;} x;', 3);
 
 // test("[].length;", 0)
 
