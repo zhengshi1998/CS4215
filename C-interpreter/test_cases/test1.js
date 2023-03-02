@@ -7,4 +7,4 @@ const tree = getAST(input);
 const visitor = new Visitor();
 const ret = visitor.visitProgram(tree)
 
-console.log(ret)
+// console.log(ret)
