@@ -60,6 +60,12 @@ export default class CSubVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
+	// Visit a parse tree produced by CSubParser#funcName.
+	visitFuncName(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
 	// Visit a parse tree produced by CSubParser#expr.
 	visitExpr(ctx) {
 	  return this.visitChildren(ctx);

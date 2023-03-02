@@ -86,6 +86,15 @@ export default class CSubListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by CSubParser#funcName.
+	enterFuncName(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#funcName.
+	exitFuncName(ctx) {
+	}
+
+
 	// Enter a parse tree produced by CSubParser#expr.
 	enterExpr(ctx) {
 	}

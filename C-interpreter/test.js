@@ -32,7 +32,6 @@ const microcode = {
             } else if(cmd.sym != undefined && cmd.expr1 == undefined) {
                 // identifier
                 // here we could have pushed an obj {type : int, value : 1}
-                // console.log("value pushed in: ", searchForVar(cmd.sym).value);
                 S.push(searchForVar(cmd.sym).value);
             }
         } else if(cmd.op != undefined && cmd.expr2 == undefined){
@@ -66,14 +65,13 @@ const microcode = {
     },
 
     varDef : (cmd) => {
-        
         if(cmd.assg != undefined) {
             // declaration + assg
-            addToFrame(currFrame, cmd.type.type, cmd.assg.symbol, undefined, false);
+            addVarToFrame(currFrame, cmd.type.type, cmd.assg.symbol, undefined);
             A.push(cmd.assg);
         } else {
             // declaration
-            addToFrame(currFrame, cmd.type.type, cmd.symbol, undefined, false);
+            addVarToFrame(currFrame, cmd.type.type, cmd.symbol, undefined);
         }
     },
 
@@ -93,7 +91,7 @@ const microcode = {
     }, 
 
     funDef : (cmd) => {
-        
+        addFuncToFrame(currFrame, cmd.returnType, cmd.funcName, cmd.block);
     }
 }
 
@@ -127,10 +125,14 @@ const applyBinaryOp = (op, expr1, expr2) => {
     }
 }
 
-const addToFrame = (frame, type, symbol, value, isFunction) => {
-    if(!isFunction) {
-        frame.vars[symbol] = {type : type, value : value};
-    }
+const addVarToFrame = (frame, type, symbol, value) => {
+    frame.vars[symbol] = {type : type, value : value};
+
+}
+
+const addFuncToFrame = (frame, returnType, funcName, block) => {
+    frame.methods[funcName] = {returnType : returnType, block : block};
+
 }
 
 const setValueInFrame = (frame, symbol, value, isFunction) => {
@@ -216,7 +218,7 @@ const test = (program, expected) => {
 
 
 // example test case:
-test("int test(){return 1;}", 9);
+test("int test(){return 1;} test();", 1);
 
 // after you complete this question, the following test cases should pass
 

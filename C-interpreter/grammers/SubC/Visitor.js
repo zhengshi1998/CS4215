@@ -16,7 +16,6 @@ export class Visitor extends CSubVisitor {
 
     // Visit a parse tree produced by CSubParser#stat.
     visitStat(ctx) {
-
         const obj = {};
         obj['tag'] = 'stat';
         var children;
@@ -113,24 +112,29 @@ export class Visitor extends CSubVisitor {
         obj['tag'] = 'funDef';
         const numChild = ctx.getChildCount();
         const args = [];
-        console.log(ctx.getChild(1));
+        
         for(var i = 0; i< numChild; i++){
             var res = this.visit(ctx.getChild(i));
-            console.log(i, " : ", res);
+            // console.log(i, " : ", res);
             if(i == 0){
                 obj['returnType'] = res;
             } else if(i == 1){
                 obj['funcName'] = res;
             } else if(i == numChild - 1){
                 obj['block'] = res;
-            } else {
-                // console.log(i, " : ", res);
+            } else if(res != undefined){
+                const param = {type : res.type.type, symbol : res.symbol};
+                args.push(param);
             }
         }
-
-        // console.log(Object.keys(ctx));
-        console.log(obj);
+        obj['args'] = args;
         return obj;
+    }
+
+
+    // Visit a parse tree produced by CSubParser#funcName.
+	visitFuncName(ctx) {
+        return ctx.ID().getText()
     }
 
 
@@ -202,9 +206,9 @@ export class Visitor extends CSubVisitor {
     visitBlock(ctx) {
         const obj = {};
         obj['tag'] = 'block';
-        var children;
-        [children] = this.visitChildren(ctx);
-        obj['children'] = children;
+        var _, program;
+        [_, program, _] = this.visitChildren(ctx);
+        obj['program'] = program;
         return obj;
     }
 

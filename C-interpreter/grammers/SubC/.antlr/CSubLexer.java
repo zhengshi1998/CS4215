@@ -1,4 +1,4 @@
-// Generated from d:\Projects\CS4215\C-interpreter\grammers\SubC\CSub.g4 by ANTLR 4.9.2
+// Generated from d:\Courses\CS4215-PL_Impl\project\C-interpreter\grammers\SubC\CSub.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

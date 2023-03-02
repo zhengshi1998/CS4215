@@ -31,8 +31,10 @@ ifStat  : 'if' '(' expr ')' block 'else' block ;
 def : varDef ';' | funDef;
 
 
-funDef : type ID '(' (type ID)? (',' type ID)* ')' block ;
+funDef : type funcName '(' ')' block
+       | type funcName  '(' (varDef) (',' varDef)* ')' block;
 
+funcName: ID;
 
 expr: ID
     | INT
@@ -43,7 +45,8 @@ expr: ID
     ;
 
 
-funCall : ID '(' expr (',' expr)* ')';
+funCall : funcName '(' expr (',' expr)* ')'
+        | funcName '(' ')';
 
 
 unaryOp :   '++' 
