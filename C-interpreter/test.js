@@ -18,7 +18,6 @@ const microcode = {
 
     stat : (cmd) => {
         const children = cmd.children;
-        pushPop(A);
         A.push(children);
     },
 
@@ -91,7 +90,43 @@ const microcode = {
     }, 
 
     funDef : (cmd) => {
-        addFuncToFrame(currFrame, cmd.returnType, cmd.funcName, cmd.block);
+        addFuncToFrame(currFrame, cmd.returnType, cmd.funcName, cmd.program, cmd.args);
+    },
+
+    funCall : (cmd) => {
+        const func = searchForFunc(cmd.funcName);
+        currFrame = createFrame();
+
+        A.push(func.program);   // push program body
+
+        if(func.args.length == cmd.args.length) {
+            for(var i=0; i<func.args.length; i++){
+                // assign call args to func params
+                A.push({tag : "assgFuncArg", symbol: func.args[i].symbol, type : func.args[i].type});
+                A.push(cmd.args[i]); // computes value for expr in S stack
+            }
+        } else {
+            console.log("Mismatch args between fuc def and fun call !!!");
+        }
+
+    },
+
+    return : (cmd) => {
+        A.push({tag : 'return_i'});
+
+        if(cmd.expr != undefined){
+            A.push(cmd.expr);
+        }
+        
+    },
+
+    return_i : (cmd) => {
+        popFrame();
+    },
+
+    assgFuncArg : (cmd) => {
+        addVarToFrame(currFrame, cmd.type, cmd.symbol, S.pop());
+        console.log("current Frame is : ", currFrame);
     }
 }
 
@@ -125,13 +160,22 @@ const applyBinaryOp = (op, expr1, expr2) => {
     }
 }
 
+const popFrame = () => {
+    if(currFrame != undefined){
+        currFrame = currFrame.next;
+    } else {
+        console.log("Current Frame is null !!!!");
+    }
+    
+}
+
 const addVarToFrame = (frame, type, symbol, value) => {
     frame.vars[symbol] = {type : type, value : value};
 
 }
 
-const addFuncToFrame = (frame, returnType, funcName, block) => {
-    frame.methods[funcName] = {returnType : returnType, block : block};
+const addFuncToFrame = (frame, returnType, funcName, program, args) => {
+    frame.methods[funcName] = {returnType : returnType, program : program, args : args};
 
 }
 
@@ -139,6 +183,17 @@ const setValueInFrame = (frame, symbol, value, isFunction) => {
     if(!isFunction) {
         frame.vars[symbol].value = value;
     }
+}
+
+const searchForFunc = (sym) => {
+    var ptr = currFrame;
+    var ptrFuncs = ptr.methods;
+    while(ptr != null && ptrFuncs[sym] == undefined){
+        ptr = ptr.next;
+        if(ptr != null) ptrFuncs = ptr.methods;
+    }
+
+    return ptrFuncs[sym];
 }
 
 const searchForVar = (sym) => {
@@ -152,20 +207,12 @@ const searchForVar = (sym) => {
     return ptrVars[sym];
 }
 
-const initFrame = (frame) => {
-    frame.next = null;
-    frame.prev = null;
-    frame.methods = {};
-    frame.vars = {};
-}
-
 const createFrame = () => {
     const frame = {};
     frame.next = currFrame;
     frame.prev = null;
     frame.methods = {};
     frame.vars = {};
-    currFrame = frame;
     return frame;
 }
 
@@ -218,7 +265,7 @@ const test = (program, expected) => {
 
 
 // example test case:
-test("int test(){return 1;} test();", 1);
+test("int x = 7; int test(int x, int y ){return x + y;} x;", 5);
 
 // after you complete this question, the following test cases should pass
 

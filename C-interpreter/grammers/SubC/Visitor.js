@@ -30,10 +30,10 @@ export class Visitor extends CSubVisitor {
     visitReturn(ctx) {
         const obj = {};
         obj['tag'] = 'return';
-        var children;
-        [children] = this.visitChildren(ctx);
-
-        obj['children'] = children;
+        var childNum = ctx.getChildCount();
+        if(childNum == 2) {
+            obj['expr'] = this.visit(ctx.getChild(1));
+        }
         
         return obj;
     }
@@ -115,13 +115,13 @@ export class Visitor extends CSubVisitor {
         
         for(var i = 0; i< numChild; i++){
             var res = this.visit(ctx.getChild(i));
-            // console.log(i, " : ", res);
             if(i == 0){
                 obj['returnType'] = res;
             } else if(i == 1){
                 obj['funcName'] = res;
-            } else if(i == numChild - 1){
-                obj['block'] = res;
+            } else if(i == numChild - 2){
+                console.log("program obj: ", res)
+                obj['program'] = res;
             } else if(res != undefined){
                 const param = {type : res.type.type, symbol : res.symbol};
                 args.push(param);
@@ -176,9 +176,19 @@ export class Visitor extends CSubVisitor {
     visitFunCall(ctx) {
         const obj = {};
         obj['tag'] = 'funCall';
-        var children;
-        [children] = this.visitChildren(ctx);
-        obj['children'] = children;
+        var childNum = ctx.getChildCount();
+        const args = [];
+
+        for(var i=0; i<childNum; i++){
+            var res = this.visit(ctx.getChild(i));
+
+            if(i == 0) {
+                obj['funcName'] = res;
+            } else if(res != undefined){
+                args.push(res);
+            }
+        }
+        obj['args'] = args;
         return obj;
     }
 

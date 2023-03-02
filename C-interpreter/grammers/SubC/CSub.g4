@@ -31,8 +31,8 @@ ifStat  : 'if' '(' expr ')' block 'else' block ;
 def : varDef ';' | funDef;
 
 
-funDef : type funcName '(' ')' block
-       | type funcName  '(' (varDef) (',' varDef)* ')' block;
+funDef : type funcName '(' ')' '{' program '}'
+       | type funcName  '(' (varDef) (',' varDef)* ')' '{' program '}';
 
 funcName: ID;
 
