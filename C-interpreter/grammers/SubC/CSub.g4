@@ -38,6 +38,7 @@ funcName: ID;
 
 expr: ID
     | INT
+    | CHAR
     | funCall
     | unaryOp expr
     | expr binaryOp expr
@@ -92,7 +93,7 @@ type  : 'void'
 
 //==================================== Lexical components =========================================
 
-
+CHAR : '\'' .*? '\'';
 STRING : '"' (' '..'~')* '"';
 WS     : [ \t\n\r]+ -> skip ;
 ADD    : '+' ;

@@ -152,9 +152,11 @@ export class Visitor extends CSubVisitor {
             obj['sym'] = ctx.ID().getText();
         }
 
-        // console.log(expr1);
-        // console.log(op);
-        // console.log(expr2);
+        if(ctx.INT() != null){
+            obj['type'] = 'int';
+        } else if(ctx.CHAR() != null) {
+            obj['type'] = 'char';
+        }
 
         if(expr1 != undefined && op != undefined && expr2 != undefined){
             obj['expr1'] = expr1;
@@ -166,6 +168,7 @@ export class Visitor extends CSubVisitor {
         } else if(expr1 != undefined && op == undefined && expr2 == undefined){
             obj['expr1'] = expr1;
         } else if(expr1 == undefined && op != undefined && expr2 == undefined){
+            // (expr)
             obj['expr1'] = op;
         }
 

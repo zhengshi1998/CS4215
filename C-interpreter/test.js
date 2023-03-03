@@ -5,6 +5,63 @@ const pushPop = (A) => {
     A.push({tag : 'pop'});
 }
 
+const checkTypeForBinaryOp = (op, op1, op2) => {
+    console.log(op1, op2);
+    switch(op){
+        case '+': 
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '-':
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '*':
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '/':
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '%': 
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '==': 
+            return op1.type === op2.type;
+
+        case '>': 
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '>=': 
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '<=': 
+            return op1.type === 'int' && op2.type === 'int';
+
+        case '<': 
+            return op1.type === 'int' && op2.type === 'int';
+    }
+}
+
+const checkTypeForUnaryOp = (op, op1) => {
+    switch(op){
+        case '+': 
+            return op1.type === 'int';
+
+        case '-':
+            return op1.type === 'int';
+
+        case '*':
+            return true;
+
+        case '&':
+            return true;
+        
+        case '++':
+            return op1.type === 'int';
+
+        case '--':
+                return op1.type === 'int';
+    }
+}
+
 const microcode = {
     program : (cmd) => {
         const stat = cmd.stat;
@@ -22,16 +79,21 @@ const microcode = {
     },
 
     expr : (cmd) => {
-        
         if(cmd.expr1 == undefined) {
             // literal or identifier
             if(cmd.sym == undefined && cmd.expr1 == undefined){
                 /// literal
-                S.push(Number(cmd.curExpr));
+                console.log(cmd);
+                if(cmd.type === 'int'){
+                    S.push({type : cmd.type, value : Number(cmd.curExpr)});
+                } else if(cmd.type === 'char'){
+                    S.push({type : cmd.type, value : cmd.curExpr});
+                }
+                
             } else if(cmd.sym != undefined && cmd.expr1 == undefined) {
                 // identifier
                 // here we could have pushed an obj {type : int, value : 1}
-                S.push(searchForVar(cmd.sym).value);
+                S.push(searchForVar(cmd.sym));
             }
         } else if(cmd.op != undefined && cmd.expr2 == undefined){
             // unaryOp
@@ -50,13 +112,22 @@ const microcode = {
 
     unaryOp : (cmd) => {
         var top = S.pop();
-        S.push(applyUnaryOp(cmd.symbol, top));
+        if(checkTypeForUnaryOp(cmd.symbol, top)){
+            S.push(applyUnaryOp(cmd.symbol, top.value));
+        } else {
+            error("wrong type!!!");
+        }
+        
     }, 
 
     binaryOp : (cmd) => {
         var op1 = S.pop();
         var op2 = S.pop();
-        S.push(applyBinaryOp(cmd.symbol, op1, op2));
+        if(checkTypeForBinaryOp(cmd.symbol, op1, op2)){
+            S.push(applyBinaryOp(cmd.symbol, op1.value, op2.value));
+        } else {
+            error("wrong type!!!");
+        }
     }, 
 
     def : (cmd) => {
@@ -80,7 +151,7 @@ const microcode = {
     },
 
     assg_i : (cmd) => {
-        var value = S[S.length - 1];
+        var value = S[S.length - 1].value;
         console.log("current frame: ", currFrame.vars);
         setValueInFrame(currFrame, cmd.symbol, value);
         S.push(value);
@@ -126,7 +197,7 @@ const microcode = {
     },
 
     assgFuncArg : (cmd) => {
-        addVarToFrame(currFrame, cmd.type, cmd.symbol, S.pop());
+        addVarToFrame(currFrame, cmd.type, cmd.symbol, S.pop().value);
         console.log("current Frame is : ", currFrame);
     }, 
 
@@ -136,7 +207,7 @@ const microcode = {
     },
 
     ifStat_i : (cmd) => {
-        var predRes = S.pop();
+        var predRes = S.pop().value == 1? true : false;
         if(predRes) {
             A.push(cmd.ifBlock);
         } else {
@@ -160,12 +231,18 @@ const microcode = {
     },
 
     whileStat_i : (cmd) => {
-        var pred = S.pop();
-        console.log("predicate : ", pred, " ", searchForVar('x').value);
+        var pred = S.pop().value == 1? true : false;
+
         if(pred) {
             A.push({tag : 'whileStat_i', block : cmd.block, predExpr : cmd.predExpr});
             A.push(cmd.predExpr);
             A.push(cmd.block);
+        }
+    },
+
+    error : (cmd) => {
+        while(A.length > 0){
+            A.pop();
         }
     }
 }
@@ -173,45 +250,45 @@ const microcode = {
 const applyUnaryOp = (op, expr) => {
     switch(op){
         case '+': 
-            return expr;
+            return {type : 'int', value : expr};
         case '-':
-            return -expr;
+            return {type : 'int', value : -expr};
         case '!':
-            return !expr;
+            return {type : 'int', value : !expr};
     }
 }
 
 const applyBinaryOp = (op, expr1, expr2) => {
     switch(op){
         case '+': 
-            return expr1 + expr2;
+            return {type : 'int', value : expr1 + expr2};
 
         case '-':
-            return expr1 - expr2;
+            return {type : 'int', value : expr1 - expr2};
 
         case '*':
-            return expr1 * expr2;
+            return {type : 'int', value : expr1 * expr2};
 
         case '/':
-            return expr1 / expr2;
+            return {type : 'int', value : expr1 / expr2};
 
         case '%': 
-            return expr1 % expr2;
+            return {type : 'int', value : expr1 % expr2};
 
         case '==': 
-            return expr1 === expr2;
+            return {type : 'int', value : expr1 === expr2};
 
         case '>': 
-            return expr1 > expr2;
+            return {type : 'int', value : expr1 > expr2};
 
         case '>=': 
-            return expr1 >= expr2;
+            return {type : 'int', value : expr1 >= expr2};
 
         case '<=': 
-            return expr1 <= expr2;
+            return {type : 'int', value : expr1 <= expr2};
 
         case '<': 
-            return expr1 < expr2;
+            return {type : 'int', value : expr1 < expr2};
     }
 }
 
@@ -222,6 +299,11 @@ const popFrame = () => {
         console.log("Current Frame is null !!!!");
     }
     
+}
+
+const error = (msg) => {
+    console.log(msg);
+    A.push({tag : 'error'});
 }
 
 const addVarToFrame = (frame, type, symbol, value) => {
@@ -320,8 +402,8 @@ const execute = (program) => {
 const test = (program, expected) => {
     // console.log(`****************Test case:*************** ` + program + "\n")
     const result = execute(program);
-    if (String(result) === String(expected)) {
-        console.log(result, "success:");
+    if (String(result.value) === String(expected)) {
+        console.log("success:", result.value);
     } else {
         console.log("FAILURE! expected: ", expected);
         console.log("result:", result);
@@ -329,12 +411,15 @@ const test = (program, expected) => {
 }
 
 
+// test("int x = 7; x;", 7);
 
-// test("int x = 7; int test(int x, int y ){return x + y;} x;", 5);
+test("int x = 7; int test(int x, int y ){return x + y;} test(1, 4);", 5);
 
 // test('int x = 1; if(x == 1){1 + 3;} else {6 + 2;};', 4);
 
-test('int x = 1; while(x < 10){x = x + 2;} x;', 3);
+// test('int x = 1; while(x < 10){x = x + 3;} x;', 10);
+
+// test('7 * (3 + 2);', 35);
 
 // test("[].length;", 0)
 
