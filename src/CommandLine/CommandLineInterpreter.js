@@ -614,10 +614,10 @@ const test = (program, expected) => {
     // console.log(`****************Test case:*************** ` + program + "\n")
     const result = execute(program);
     if (String(result.value) === String(expected)) {
-        alert("success:", result.value);
+        console.log("success:", result.value);
     } else {
-        alert("FAILURE! expected: ", expected);
-        alert("result:", result);
+        console.log("FAILURE! expected: ", expected);
+        console.log("result:", result);
     }
 }
 
@@ -643,6 +643,6 @@ const test = (program, expected) => {
 
 // test("int* x = malloc(4); *x = 16; x;", null);  // malloc heap memory, x stores the address in heap array
 
-// test("int* x = malloc(4); *x = 16; *x; free(x);", 16);  // free heap memory
+// test("int* x = malloc(4); *x = 16; free(x); 0;", 0);  // free heap memory
 
-// test("int* x = malloc(4); int* y = malloc(4); free(x);", 16);  // free heap memory
+// test("int* x = malloc(4); int* y = malloc(4); *y = 12; free(x); *y;", 12);  // free heap memory
