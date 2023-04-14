@@ -8,10 +8,25 @@ stat: assg ';'
     | ifStat
     | def 
     | whileStat
+    | forStat
     | block
+    | gotoStat ';'
+    | labelStat ':'
+    | breakStat ';' 
+    | continueStat ';'
     | return ';'
     ;
 
+
+forStat : 'for' '(' assg ';' expr ';' assg ')' block;
+
+gotoStat : 'goto' ID;
+
+labelStat : ID;
+
+breakStat : 'break';
+
+continueStat : 'continue';
 
 return : 'return' (expr)?;
 
@@ -26,7 +41,7 @@ assg: ID '=' expr
 whileStat : 'while' '(' expr ')' block;
 
 
-ifStat  : 'if' '(' expr ')' block 'else' block ;
+ifStat : 'if' '(' expr ')' block 'else' block ;
 
 
 def : varDef ';' | funDef;

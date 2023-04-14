@@ -278,6 +278,58 @@ const microcode = {
         }
     },
 
+    forStat: (cmd) => {
+        A.push({ tag: 'forStat_i', block: cmd.block, predExpr: cmd.predExpr, updateExpr: cmd.updateExpr });
+        A.push(cmd.predExpr);
+        A.push(cmd.initExpr);
+    },
+
+    forStat_i: (cmd) => {
+        var pred = S.pop().value == 1 ? true : false;
+
+        if (pred) {
+            A.push({ tag: 'forStat_i', block: cmd.block, predExpr: cmd.predExpr, updateExpr: cmd.updateExpr });
+            A.push(cmd.predExpr);
+            A.push(cmd.updateExpr);
+            A.push(cmd.block);
+        }
+    },
+
+    break: (cmd) => {
+        // pop all commands until whileStat_i or forStat_i
+        while (A.length > 0) {
+            var cmd = A.pop();
+            if (cmd.tag == 'whileStat_i' || cmd.tag == 'forStat_i') {
+                break;
+            }
+        }
+        // if there is no while or for loop, error
+        if (cmd.tag != 'whileStat_i' && cmd.tag != 'forStat_i') {
+            error("There is no while or for loop to break from !!!");
+        }
+    },
+
+    continue: (cmd) => {
+        // pop all commands until whileStat_i or forStat_i
+        while (A.length > 0) {
+            var cmd = A.pop();
+            if (cmd.tag == 'whileStat_i' || cmd.tag == 'forStat_i') {
+                // if it is whileStat_i, push the predExpr and whileStat_i
+                A.push(cmd);
+                A.push(cmd.predExpr);
+                // if it is forStat_i, push the updateExpr, predExpr and forStat_i
+                if (cmd.tag == 'forStat_i') {
+                    A.push(cmd.updateExpr);
+                }
+                break;
+            }
+        }
+        // if there is no while or for loop, error
+        if (cmd.tag != 'whileStat_i' && cmd.tag != 'forStat_i') {
+            error("There is no while or for loop to continue from !!!");
+        }
+    },
+
     error: (cmd) => {
         while (A.length > 0) {
             A.pop();
@@ -646,3 +698,7 @@ const test = (program, expected) => {
 // test("int* x = malloc(4); *x = 16; free(x); 0;", 0);  // free heap memory
 
 // test("int* x = malloc(4); int* y = malloc(4); *y = 12; free(x); *y;", 12);  // free heap memory
+
+// test('int x = 0; int i; for(i = 0; i < 10; i = i + 1){x = x + 4; if(x >= 10){break;} else {x = x;}} x;', 12); // for loop, break and continue
+
+test('int x = 0; int i; for(i = 1; i < 10; i = i * 2;){x = x + 4;} x;', 16);

@@ -18,6 +18,36 @@ export default class CSubVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
+	// Visit a parse tree produced by CSubParser#forStat.
+	visitForStat(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by CSubParser#gotoStat.
+	visitGotoStat(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by CSubParser#labelStat.
+	visitLabelStat(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by CSubParser#breakStat.
+	visitBreakStat(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
+	// Visit a parse tree produced by CSubParser#continueStat.
+	visitContinueStat(ctx) {
+	  return this.visitChildren(ctx);
+	}
+
+
 	// Visit a parse tree produced by CSubParser#return.
 	visitReturn(ctx) {
 	  return this.visitChildren(ctx);

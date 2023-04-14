@@ -26,6 +26,39 @@ export class Visitor extends CSubVisitor {
     }
 
 
+    // Visit a parse tree produced by CSubParser#break
+    // break : 'break';
+    visitBreakStat(ctx) {
+        const obj = {};
+        obj['tag'] = 'break';
+        console.log(obj);
+        return obj;
+    }
+
+    // Visit a parse tree produced by CSubParser#continue
+    // continue : 'continue';
+    visitContinueStat(ctx) {
+        const obj = {};
+        obj['tag'] = 'continue';
+        console.log(obj);
+        return obj;
+    }
+
+
+    // Visit a parse tree produced by CSubParser#forStat.
+    // forStat : 'for' '(' assg ';' expr ';' assg ')' block;
+    visitForStat(ctx) {
+        const obj = {};
+        obj['tag'] = 'forStat';
+        obj['initExpr'] = this.visit(ctx.getChild(2));
+        obj['predExpr'] = this.visit(ctx.getChild(4));
+        obj['updateExpr'] = this.visit(ctx.getChild(6));
+        obj['block'] = this.visit(ctx.getChild(8));
+        console.log(obj);
+        return obj;
+    }
+
+
     // Visit a parse tree produced by CSubParser#return.
     visitReturn(ctx) {
         const obj = {};

@@ -23,6 +23,51 @@ export default class CSubListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
+	// Enter a parse tree produced by CSubParser#forStat.
+	enterForStat(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#forStat.
+	exitForStat(ctx) {
+	}
+
+
+	// Enter a parse tree produced by CSubParser#gotoStat.
+	enterGotoStat(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#gotoStat.
+	exitGotoStat(ctx) {
+	}
+
+
+	// Enter a parse tree produced by CSubParser#labelStat.
+	enterLabelStat(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#labelStat.
+	exitLabelStat(ctx) {
+	}
+
+
+	// Enter a parse tree produced by CSubParser#breakStat.
+	enterBreakStat(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#breakStat.
+	exitBreakStat(ctx) {
+	}
+
+
+	// Enter a parse tree produced by CSubParser#continueStat.
+	enterContinueStat(ctx) {
+	}
+
+	// Exit a parse tree produced by CSubParser#continueStat.
+	exitContinueStat(ctx) {
+	}
+
+
 	// Enter a parse tree produced by CSubParser#return.
 	enterReturn(ctx) {
 	}
