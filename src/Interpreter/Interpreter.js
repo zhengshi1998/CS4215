@@ -413,6 +413,58 @@ export class Interpreter {
                 this.A.push(cmd.block);
             }
         },
+
+        forStat: (cmd) => {
+            this.A.push({ tag: 'forStat_i', block: cmd.block, predExpr: cmd.predExpr, updateExpr: cmd.updateExpr });
+            this.A.push(cmd.predExpr);
+            this.A.push(cmd.initExpr);
+        },
+    
+        forStat_i: (cmd) => {
+            var pred = this.S.pop().value == 1 ? true : false;
+    
+            if (pred) {
+                this.A.push({ tag: 'forStat_i', block: cmd.block, predExpr: cmd.predExpr, updateExpr: cmd.updateExpr });
+                this.A.push(cmd.predExpr);
+                this.A.push(cmd.updateExpr);
+                this.A.push(cmd.block);
+            }
+        },
+    
+        break: (cmd) => {
+            // pop all commands until whileStat_i or forStat_i
+            while (this.A.length > 0) {
+                var cmd = this.A.pop();
+                if (cmd.tag == 'whileStat_i' || cmd.tag == 'forStat_i') {
+                    break;
+                }
+            }
+            // if there is no while or for loop, error
+            if (cmd.tag != 'whileStat_i' && cmd.tag != 'forStat_i') {
+                this.error("There is no while or for loop to break from !!!");
+            }
+        },
+    
+        continue: (cmd) => {
+            // pop all commands until whileStat_i or forStat_i
+            while (this.A.length > 0) {
+                var cmd = this.A.pop();
+                if (cmd.tag == 'whileStat_i' || cmd.tag == 'forStat_i') {
+                    // if it is whileStat_i, push the predExpr and whileStat_i
+                    this.A.push(cmd);
+                    this.A.push(cmd.predExpr);
+                    // if it is forStat_i, push the updateExpr, predExpr and forStat_i
+                    if (cmd.tag == 'forStat_i') {
+                        this.A.push(cmd.updateExpr);
+                    }
+                    break;
+                }
+            }
+            // if there is no while or for loop, error
+            if (cmd.tag != 'whileStat_i' && cmd.tag != 'forStat_i') {
+                this.error("There is no while or for loop to continue from !!!");
+            }
+        },
     
         error: (cmd) => {
             while (this.A.length > 0) {

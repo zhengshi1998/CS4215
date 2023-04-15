@@ -699,6 +699,9 @@ const test = (program, expected) => {
 
 // test("int* x = malloc(4); int* y = malloc(4); *y = 12; free(x); *y;", 12);  // free heap memory
 
-// test('int x = 0; int i; for(i = 0; i < 10; i = i + 1){x = x + 4; if(x >= 10){break;} else {x = x;}} x;', 12); // for loop, break and continue
+// test('int x = 0; int i; for(i = 1; i < 10; i = i * 2){x = x + 4;} x;', 16); // for loop
 
-test('int x = 0; int i; for(i = 1; i < 10; i = i * 2;){x = x + 4;} x;', 16);
+// test('int x = 0; int i; for(i = 0; i < 10; i = i + 1){x = x + 4; if(x >= 10){break;} else {x = x;}} x;', 12); // for loop, break 
+
+// test('int x = 0; int i; for(i = 0; i < 10; i = i + 1){ continue; x = x + 4;} x;', 0); // for loop, continue
+

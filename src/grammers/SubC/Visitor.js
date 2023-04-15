@@ -31,7 +31,7 @@ export class Visitor extends CSubVisitor {
     visitBreakStat(ctx) {
         const obj = {};
         obj['tag'] = 'break';
-        console.log(obj);
+        // console.log(obj);
         return obj;
     }
 
@@ -40,7 +40,7 @@ export class Visitor extends CSubVisitor {
     visitContinueStat(ctx) {
         const obj = {};
         obj['tag'] = 'continue';
-        console.log(obj);
+        // console.log(obj);
         return obj;
     }
 
@@ -54,7 +54,7 @@ export class Visitor extends CSubVisitor {
         obj['predExpr'] = this.visit(ctx.getChild(4));
         obj['updateExpr'] = this.visit(ctx.getChild(6));
         obj['block'] = this.visit(ctx.getChild(8));
-        console.log(obj);
+        // console.log(obj);
         return obj;
     }
 
@@ -86,7 +86,7 @@ export class Visitor extends CSubVisitor {
         } else {
             obj['symbol'] = ctx.ID().getText();
         }
-        console.log(obj)
+        // console.log(obj)
         return obj;
     }
 
@@ -120,7 +120,7 @@ export class Visitor extends CSubVisitor {
         obj['tag'] = 'whileStat';
         obj['predExpr'] = this.visit(ctx.getChild(2));
         obj['block'] = this.visit(ctx.getChild(4));
-        console.log(obj);
+        // console.log(obj);
         return obj;
     }
 
@@ -132,7 +132,7 @@ export class Visitor extends CSubVisitor {
         obj['predExpr'] = this.visit(ctx.getChild(2));
         obj['ifBlock'] = this.visit(ctx.getChild(4));
         obj['elseBlock'] = this.visit(ctx.getChild(6));
-        console.log(obj);
+        // console.log(obj);
         return obj;
     }
 
@@ -162,7 +162,7 @@ export class Visitor extends CSubVisitor {
             } else if(i == 1){
                 obj['funcName'] = res;
             } else if(i == numChild - 2){
-                console.log("program obj: ", res)
+                // console.log("program obj: ", res)
                 obj['program'] = res;
             } else if(res != undefined){
                 const param = {type : res.type.type, symbol : res.symbol};
