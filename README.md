@@ -2,8 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Install necessary libraries: npm install
+## Install necessary libraries: 
 
+### `npm install`
 
 ### `npm start`
 
